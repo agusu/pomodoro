@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 function Timer({ sessionMins, breakMins }) {
   const [timer, setTimer] = useState();
@@ -9,7 +9,7 @@ function Timer({ sessionMins, breakMins }) {
   const [hasStarted, setStartedState] = useState(false);
   const [breakStarted, setBreakStarted] = useState(false);
   
-  const tick = useCallback(()=>{
+  const tick = () => {
     console.log("tick", seconds, minutes)
     if (seconds > 0) {
       console.log("tick s", seconds, timer)
@@ -24,7 +24,7 @@ function Timer({ sessionMins, breakMins }) {
     } else {
       clearInterval(timer);
     }
-  }, [breakMins, breakStarted, minutes, seconds])
+  }
 
 
   
