@@ -95,10 +95,10 @@ function App() {
     setSessionMins(sessionMins + 1);
   };
   const decrementBreak = () => {
-    setBreakMins(breakMins - 1);
+    if (breakMins>1) setBreakMins(breakMins - 1);
   };
   const decrementSession = () => {
-    setSessionMins(sessionMins - 1);
+    if (sessionMins>1) setSessionMins(sessionMins - 1);
   };
 
   return (
