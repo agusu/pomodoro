@@ -3,34 +3,70 @@ import { useTimer } from "react-timer-hook";
 import React, { useEffect, useState } from 'react';
 
 function Timer({ sessionTime, breakTime }) {
-  let timestamp = new Date();
-  timestamp.setSeconds(timestamp.getSeconds() + sessionTime);
-  useEffect(() =>
-    {timestamp = new Date();
-    timestamp.setSeconds(timestamp.getSeconds() + sessionTime);},[sessionTime, timestamp])
+  const [cseconds, setCSeconds] = useState(0);
+  const [cminutes, setCMinutes] = useState(sessionTime);
+  const [hasStarted, setStarted] = useState(false);
+  const timestamp = new Date();
+  timestamp.setSeconds(timestamp.getSeconds() + sessionTime*60)
 
   const {
     seconds,
     minutes,
-    hours,
-    days,
     isRunning,
     start,
     pause,
     resume,
     restart,
-  } = useTimer({ timestamp, onExpire: () => console.warn("onExpire called") });
-
-  const startStop = () => {isRunning ? pause() : start();};
+  } = useTimer({ expiryTimestamp: timestamp, onExpire: () => {
+    console.log("expired")
+    restart(breakTime * 60);
+  }, autoStart: false });
   
+  useEffect(() =>
+    {
+      setCSeconds(seconds);
+      setCMinutes(minutes);
+    },[seconds, minutes])
+  
+  useEffect(() => {
+    if (!isRunning) {
+      let time = new Date();
+      time.setSeconds(time.getSeconds() + sessionTime * 60);
+      setCSeconds(0);
+      setCMinutes(sessionTime);
+      restart(time, false);
+      setTimeout(() => {pause()}, 100);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionTime])
+
+  const startStop = () => {
+    if(isRunning) {
+      pause();
+      return;
+    } else if (hasStarted) { 
+      console.log("resume");
+    resume();} else {
+      console.log(isRunning, hasStarted)
+      start();
+      setStarted(true);
+    }
+  };
+  
+  const handleReset = () => {
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + sessionTime * 60);
+    restart(time, false);
+    setStarted(false);
+    setTimeout(() => {pause()}, 100);
+  }
 
   return (
     <>
-      <div id="timer-label">Session {isRunning}</div>
-      <div id="time-left">{minutes}:{seconds}</div>
+      <div id="timer-label">Session {isRunning ? "running" : "not running"}</div>
+      <div id="time-left">{cminutes}:{cseconds}</div>
       <button id="start_stop" onClick={startStop}>START/STOP</button>
-      <button id="reset" onClick={() => {const time = new Date();
-  time.setSeconds(time.getSeconds() + sessionTime); restart(time)}}>RESET</button>
+      <button id="reset" onClick={handleReset}>RESET</button>
     </>
   );
 }
@@ -66,7 +102,7 @@ function App() {
         <button id="session-increment" onClick={incrementSession}>+</button>
         <button id="session-decrement" onClick={decrementSession}>-</button>
       </div>
-      <Timer sessionTime = {sessionMins * 60} breakTime = {breakMins * 60}/>
+      <Timer sessionTime = {sessionMins} breakTime = {breakMins}/>
     </>
   );
 }
