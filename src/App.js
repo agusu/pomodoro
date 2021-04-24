@@ -1,8 +1,8 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function Timer({ sessionMins, breakMins }) {
-  const [timer, setTimer] = useState();
+  const [timer, setTimer] = useState(setInterval(console.log(),1000));
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(sessionMins);
   const [isRunning, setRunningState] = useState(false);
@@ -10,14 +10,13 @@ function Timer({ sessionMins, breakMins }) {
   const [breakStarted, setBreakStarted] = useState(false);
   
   const tick = () => {
-    console.log("tick", seconds, minutes)
     if (seconds > 0) {
-      console.log("tick s", seconds, timer)
+      console.log("tickS m", minutes, "s", seconds, "t", timer)
       setSeconds(seconds - 1);
     } else if (minutes > 0) {
       setMinutes(minutes - 1);
       setSeconds(59);
-      console.log("tick m", minutes, seconds, timer)
+      console.log("tickM m", minutes, "s", seconds, "t", timer)
     } else if (!breakStarted) {
       setBreakStarted(true);
       setMinutes(breakMins);
@@ -26,7 +25,18 @@ function Timer({ sessionMins, breakMins }) {
     }
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {if (!isRunning) {setSeconds(0); setMinutes(sessionMins)}},[sessionMins])
 
+  useEffect(() => {
+    
+    if (isRunning) {
+      setTimer(setInterval(tick, 1000))
+    } else {
+      clearInterval(timer)
+    }
+    return () => {clearInterval(timer)}
+    }, [isRunning])
   
   function restart() {
     pause();
@@ -36,7 +46,6 @@ function Timer({ sessionMins, breakMins }) {
   }
 
   function start() {
-    setTimer(setInterval(tick, 1000))
     setRunningState(true);
     setStartedState(true);
   }
@@ -44,12 +53,10 @@ function Timer({ sessionMins, breakMins }) {
   function resume() {
     if (!hasStarted) return;
     setRunningState(true);
-    setTimer(setInterval(tick, 1000));
   }
   function pause() {
     if (!hasStarted) return;
     setRunningState(false);
-    clearInterval(timer);
   }
 
   const startStop = () => {
