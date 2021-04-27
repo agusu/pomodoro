@@ -8,6 +8,7 @@ import { Header, Grid } from 'semantic-ui-react';
 import alarm from './sounds/alarm.mp3'
 import "./App.css";
 import tomato from "./img/tomatocap.png";
+import {styles} from "./styles.js"
 
 function App() {
   const [sessionMins, setSessionMins] = useState(25); //25 min
@@ -47,47 +48,16 @@ function App() {
     beep.current.currentTime = 0;
   }
 
-  const styles = {
-    container: {
-      height: '100vh',
-    },
-    box: {
-      maxWidth: 500, 
-      padding: "45px",
-      backgroundColor: "#FF6347" ,
-      borderRadius:"48%",
-    },
-    title: {
-      color:"white",
-      position: "absolute",
-      top: 0,
-      left: 0,
-      margin: "0px",
-      paddingTop: "20px",
-      paddingRight: "20px",
-      width: "100vw",
-      textAlign: "right",
-      fontSize: "3em"
-    },
-    display: {
-
-    },
-    controls: {
-
-    },
-    setters: {
-      maxWidth: 300,
-      alignContent: "center",
-    }
-  }
-  return (<div style={{position: "relative"}}><Header as="h1" style={styles.title}>Pomodoro Clock</Header>
-    <Grid textAlign='center' style={styles.container} verticalAlign='middle'> 
+  
+  return (<div style={{position: "relative"}}>
+    <Header as="h1" style={styles.title}>Pomodoro Clock</Header>
+    <Grid textAlign={'center'} style={styles.container} verticalAlign={'middle'}> 
       <Grid.Column style={styles.box} className="box">
         <img src={tomato} alt="tomato"/>
         <Display currentTime={remaining_ms} currentType={timerType} style={styles.display}/>
         <Controls timerStatus={[isRunning, setRunning]} handleReset={handleReset} style={styles.setters}/>
       <Grid padded={'vertically'} centered>
-        <Grid.Row columns={2} textAlign='center' style={styles.setters}>
+        <Grid.Row columns={2} style={styles.setters}>
           <Grid.Column id='session-column'>
             <TimerSetter type='session' useDuration={[sessionMins, setSessionMins]}/>
           </Grid.Column>

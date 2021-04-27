@@ -1,6 +1,6 @@
 import {React} from 'react'
 import {Segment, Icon, Button, Statistic} from  'semantic-ui-react';
-
+import {styles} from './styles.js'
 export default function TimerSetter({type, useDuration}){
     const [duration, setDuration] = useDuration;
     const increment = () => {
@@ -18,12 +18,12 @@ export default function TimerSetter({type, useDuration}){
 
     return (<div id={`timersetter-${type}`} onWheel={(e) => detectScrollDir(e)}>
         <Segment.Group compact size='huge'>
-            <Statistic size="small" textAlign='center' className='pt' style={{lineHeight: "0.1em"}}>
+            <Statistic size="small" className='pt' style={styles.minutes}>
                 <Statistic.Value id={`${type}-length`}>{duration}</Statistic.Value>
                 <Statistic.Label id={`${type}-label`}>
                     <Icon name={type === 'session' ? 'time' : 'coffee'}/> {type}</Statistic.Label>
             </Statistic>
-        <Segment compact textAlign='center' className='plus-minus-box'>
+        <Segment compact className='plus-minus-box' >
             <Button.Group size='large'>
                 <Button color={"red"} id={`${type}-decrement`} onClick={decrement} className="setter" icon="minus"/>
                 <Button color={"red"}  id={`${type}-increment`} onClick={increment} className="setter" icon="add"/>
