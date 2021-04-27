@@ -1,6 +1,5 @@
 import {React} from 'react'
 import {Segment, Icon, Button, Statistic} from  'semantic-ui-react';
-import $ from "jquery";
 
 export default function TimerSetter({type, useDuration}){
     const [duration, setDuration] = useDuration;
