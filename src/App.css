@@ -22,4 +22,41 @@
 .plus-minus-box{
   border-top: 0px !important;
   margin-top: -10px !important;
+  padding: 5px 20px 10px 20px !important;
+  background-color:transparent !important;
+}
+
+#time-left{
+  font-size:4em
+}
+
+#session-length::after, #break-length::after{
+  content:"min.";
+  position: sticky;
+  text-transform: none;
+  font-size: 0.34em;
+  opacity:0.5;
+}
+#setters {
+  padding: 5px 20px 10px 20px !important;
+}
+
+#timer-label {
+  line-height: 0.2em;
+}
+
+#time-left{
+  line-height: 1em;
+}
+body {
+  background-color:	#86cecb !important
+}
+
+img {
+  width: 150px;
+  text-align: center;
+  display:flex;
+  position:absolute;
+  top:-65px;
+  left: 170px;
 }

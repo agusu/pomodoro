@@ -5,8 +5,14 @@ export default function Controls({timerStatus, handleReset}){
     const [isRunning, setRunning] = timerStatus;
 
     return (<>
-        <Button id="start_stop" onClick={() => setRunning(!isRunning)}>{isRunning ? "STOP" : "START"}</Button>
-        <Button id="reset" onClick={handleReset}>RESET</Button>
+        <Button 
+            id="start_stop" 
+            onClick={() => setRunning(!isRunning)}
+            icon={isRunning ? 'stop' : 'play'} color="red" />
+        <Button 
+            id="reset"
+            onClick={handleReset}
+            icon='undo' color="yellow"/>
         </>
     )
 }

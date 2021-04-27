@@ -1,11 +1,13 @@
-import "./App.css";
+
 import React, { useEffect, useState, useRef} from 'react';
 import {useInterval} from './hooks/useInterval';
 import Display from './Display';
 import Controls from './Controls'
 import TimerSetter from './TimerSetter';
-import { Container, Grid } from 'semantic-ui-react';
+import { Header, Grid } from 'semantic-ui-react';
 import alarm from './sounds/alarm.mp3'
+import "./App.css";
+import tomato from "./img/tomatocap.png";
 
 function App() {
   const [sessionMins, setSessionMins] = useState(25); //25 min
@@ -45,21 +47,58 @@ function App() {
     beep.current.currentTime = 0;
   }
 
-  return (
-    <Container>   
-      <header><h1>Pomodoro Clock</h1></header>
-      <main>
-        <Display currentTime={remaining_ms} currentType={timerType}/>
-        <Controls timerStatus={[isRunning, setRunning]} handleReset={handleReset}/>
-        <Grid columns={2} divided stackable textAlign='center' id="setters">
+  const styles = {
+    container: {
+      height: '100vh',
+    },
+    box: {
+      maxWidth: 500, 
+      padding: "45px",
+      backgroundColor: "#FF6347" ,
+      borderRadius:"48%",
+    },
+    title: {
+      color:"white",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      margin: "0px",
+      paddingTop: "20px",
+      paddingRight: "20px",
+      width: "100vw",
+      textAlign: "right",
+      fontSize: "3em"
+    },
+    display: {
+
+    },
+    controls: {
+
+    },
+    setters: {
+      maxWidth: 300,
+      alignContent: "center",
+    }
+  }
+  return (<div style={{position: "relative"}}><Header as="h1" style={styles.title}>Pomodoro Clock</Header>
+    <Grid textAlign='center' style={styles.container} verticalAlign='middle'> 
+      <Grid.Column style={styles.box} className="box">
+        <img src={tomato} alt="tomato"/>
+        <Display currentTime={remaining_ms} currentType={timerType} style={styles.display}/>
+        <Controls timerStatus={[isRunning, setRunning]} handleReset={handleReset} style={styles.setters}/>
+      <Grid padded={'vertically'} centered>
+        <Grid.Row columns={2} textAlign='center' style={styles.setters}>
           <Grid.Column id='session-column'>
-          <TimerSetter type='session' useDuration={[sessionMins, setSessionMins]}/></Grid.Column>
+            <TimerSetter type='session' useDuration={[sessionMins, setSessionMins]}/>
+          </Grid.Column>
           <Grid.Column id='break-column'>
-          <TimerSetter type='break' useDuration={[breakMins, setBreakMins]}/></Grid.Column>
+            <TimerSetter type='break' useDuration={[breakMins, setBreakMins]}/>
+          </Grid.Column>
+        </Grid.Row>
         </Grid>
-      </main>
       <audio id="beep" ref={beep} src={alarm}></audio>
-    </Container>
+      </Grid.Column> 
+    </Grid></div>
   );
 }
 
